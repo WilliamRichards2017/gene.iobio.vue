@@ -2563,7 +2563,9 @@ class CohortModel {
   organizeVariantsByFilterAndGene(activeFilterName, isFullAnalysis, interpretationFilters, variant, options={includeNotCategorized: false, includeReviewed: true, includeAll: true}) {
     let self = this;
 
-    let filters = [];
+        console.log("self.filterMOdel.flagCriteria", self.filterModel.flagCriteria);
+
+        let filters = [];
     for (var filterName in self.filterModel.flagCriteria) {
       if (activeFilterName == null || activeFilterName == filterName || activeFilterName == 'coverage') {
         let flagCriteria = self.filterModel.flagCriteria[filterName];
@@ -2572,8 +2574,13 @@ class CohortModel {
         if (!options.includeReviewed && filterName == 'reviewed') {
           include = false;
         }
+
+        console.log("isFullAnalysis", isFullAnalysis);
+        console.log("!options.includeNotCategorized", !options.includeNotCategorized);
+        console.log("filterName", filterName);
         if (isFullAnalysis && !options.includeNotCategorized && filterName == 'notCategorized') {
           include = false;
+          console.log("include false not categorized");
         }
         if (include) {
           var sortedGenes = self._organizeVariantsForFilter(filterName, flagCriteria.userFlagged, isFullAnalysis, interpretationFilters, options, variant);

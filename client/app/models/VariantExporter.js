@@ -368,7 +368,7 @@ export default class VariantExporter {
             //
 
             // Make sure we have loaded the variants before calling variants
-            me.cohort.promiseAnnotateVariants(theGeneObject, theTranscript, 
+            me.cohort.promiseAnnotateVariants(theGeneObject, theTranscript,
                 {'isMultiSample': me.mode == 'trio' && me.samplesInSingleVcf(),'isBackground': true})
             .then(function(data) {
               let trioVcfData = data;
@@ -412,24 +412,24 @@ export default class VariantExporter {
 
           } else {
 
-            if (!variant.hasOwnProperty('extraAnnot') || !variant.extraAnnot) {
-              me.cohort.getProbandModel()
-               .promiseGetVariantExtraAnnotations(theGeneObject, theTranscript, variant, format, getHeader, sampleNames)
-               .then(function(data) {
-                var theVariant = data[0];
-                var sourceVariant = data[1];
-                var theRawVcfRecords = data[2];
-
-                me._promiseFormatRecord(theVariant, sourceVariant, theRawVcfRecords, theGeneObject, theTranscript, format, exportRec)
-                  .then(function(data) {
-                    resolve(data);
-                  })
-
-              });
-             } else {
-                me.formatDisplay(variant, exportRec, format);
-                resolve([exportRec]);
-             }
+            // if (!variant.hasOwnProperty('extraAnnot') || !variant.extraAnnot) {
+            //   me.cohort.getProbandModel()
+            //    .promiseGetVariantExtraAnnotations(theGeneObject, theTranscript, variant, format, getHeader, sampleNames)
+            //    .then(function(data) {
+            //     var theVariant = data[0];
+            //     var sourceVariant = data[1];
+            //     var theRawVcfRecords = data[2];
+            //
+            //     me._promiseFormatRecord(theVariant, sourceVariant, theRawVcfRecords, theGeneObject, theTranscript, format, exportRec)
+            //       .then(function(data) {
+            //         resolve(data);
+            //       })
+            //
+            //   });
+            //  } else {
+            //     me.formatDisplay(variant, exportRec, format);
+            //     resolve([exportRec]);
+            //  }
           }
 
 
@@ -611,7 +611,7 @@ export default class VariantExporter {
     rec.isUserFlagged     = variant.isUserFlagged ? "Y" : "";
     rec.filtersPassed     = variant.filtersPassed  && Array.isArray(variant.filtersPassed) ? variant.filtersPassed.join(",") : (variant.filtersPassed ? variant.filtersPassed : "");
     if (format == 'json') {
-      rec.notes           = variant.notes && variant.notes.length > 0 ? variant.notes : "";    
+      rec.notes           = variant.notes && variant.notes.length > 0 ? variant.notes : "";
     } else {
       rec.notes           = info.notesFlattened;
     }

@@ -851,7 +851,10 @@ export default {
         variant.isUserFlagged = true;
       }
 
+      console.log("self.interpretationFilters", self.interpretationFilters);
+
       var filters = self.cohortModel.organizeVariantsByFilterAndGene(self.activeFilterName, self.isFullAnalysis, self.interpretationFilters, variant);
+      console.log("filters", filters);
       self.geneLists = filters.map(function(filterObject, idx) {
         self.variantCount += filterObject.variantCount;
         filterObject.filter.key = filterObject.key;
@@ -871,10 +874,14 @@ export default {
         }
       })
 
+      console.log("self.geneLists", self.geneLists);
+
       self.flattenGenesList();
 
       self.$emit("count-changed", self.variantCount);
       self.$emit("gene-lists-changed", self.geneLists);
+
+      console.log("self.geneLists", self.geneLists);
 
       self.expansionControl =  self.geneLists.map(function(geneList) {
         return geneList.expand;

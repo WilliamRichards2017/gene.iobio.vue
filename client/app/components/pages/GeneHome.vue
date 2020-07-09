@@ -2146,7 +2146,7 @@ export default {
         self.showVariantAssessment = false;
         self.activeGeneVariantTab = self.isBasicMode ? "0" : "1";
 
-        self.showVariantExtraAnnots(sourceComponent ? sourceComponent.relationship : 'proband', variant);
+        // self.showVariantExtraAnnots(sourceComponent ? sourceComponent.relationship : 'proband', variant);
 
         self.getVariantCardRefs().forEach(function(variantCard) {
           if (sourceComponent == null || variantCard != sourceComponent) {
@@ -3010,7 +3010,7 @@ export default {
                 self.$set(self, "selectedVariantInterpretation", flaggedVariant.interpretation);
                 self.showVariantAssessment = false;
 
-                self.showVariantExtraAnnots('proband', self.selectedVariant);
+                // self.showVariantExtraAnnots('proband', self.selectedVariant);
 
                 self.$refs.variantCardProbandRef.showFlaggedVariant(flaggedVariant);
 
@@ -3425,6 +3425,7 @@ export default {
       if (this.clinIobioUrls.indexOf(event.origin) == -1) {
         return;
       }
+
       this.clinIobioUrl = event.origin;
       this.launchedFromClin = true;
       if (self.filterModel) {
@@ -3433,6 +3434,8 @@ export default {
       if (self.geneModel) {
         self.geneModel.isFullAnalysis = true;
       }
+
+      self.isFullAnalysis = false;
 
       var clinObject = JSON.parse(event.data);
 
@@ -3479,7 +3482,7 @@ export default {
               self.geneModel.setRankedGenes({'gtr': clinObject.gtrFullList, 'phenolyzer': clinObject.phenolyzerFullList })
               self.geneModel.setGenePhenotypeHitsFromClin(clinObject.genesReport);
             }
-            
+
             //Sets the current build from clinObject type set-data
             self.genomeBuildHelper.setCurrentBuild(clinObject.buildName);
 
@@ -3497,6 +3500,10 @@ export default {
         } else {
           console.log("gene.iobio set-data cohort model already loaded")
           self.analysis = clinObject.analysis;
+
+          console.log("self.analysis.filterModel", self.analysis);
+
+
           self.geneModel.setRankedGenes({'gtr': clinObject.gtrFullList, 'phenolyzer': clinObject.phenolyzerFullList })
           self.promiseInitClin(clinObject).
           then(function() {
@@ -3608,7 +3615,9 @@ export default {
 
         self.analysis.payload.variants = self.analysis.payload.variants.filter(v => v.alt );
 
+        console.log("self.analysis.payload.genes", self.analysis.payload.genes);
 
+        console.log("self.filterModel.flagCriteria in geneHoome", self.filterModel.flagCriteria);
 
         self.analysis.payload.variants.forEach(function(variant) {
           let p = self.promiseExportAnalysisVariant(variant)
